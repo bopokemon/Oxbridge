@@ -46,7 +46,9 @@ namespace SEOWebsite
                     listElements = chromeDriver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
                 }
                 listElements.ElementAt(0).Click();
+                Task.Delay(60000).Wait();
             }
+            Console.WriteLine("Done");
         }
     }
 }
