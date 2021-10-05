@@ -46,5 +46,17 @@ namespace SEOWebsite.Properties {
                 this["KeyWord"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Edge")]
+        public string BrowserType {
+            get {
+                return ((string)(this["BrowserType"]));
+            }
+            set {
+                this["BrowserType"] = value;
+            }
+        }
     }
 }

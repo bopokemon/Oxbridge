@@ -8,5 +8,8 @@
     <Setting Name="KeyWord" Type="System.String" Scope="User">
       <Value Profile="(Default)">trung tam tieng anh oxbridge</Value>
     </Setting>
+    <Setting Name="BrowserType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Edge</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
