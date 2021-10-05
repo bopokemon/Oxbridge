@@ -19,34 +19,38 @@ namespace SEOWebsite
             chromeOptions.AddAdditionalCapability("useAutomationExtension", false);
             chromeOptions.AddExcludedArgument("enable-automation");
 
-            IWebDriver chromeDriver = new ChromeDriver(driverPath, chromeOptions);
-            chromeDriver.Manage().Window.Maximize();
-            WebDriverWait wait = new WebDriverWait(chromeDriver, TimeSpan.FromSeconds(60));
             int loopTimes = Properties.Settings.Default.LoopTimes;
             string keyWord = Properties.Settings.Default.KeyWord;
-            for (int i = 0; i < loopTimes; i++)
+            for (int i = 0; i < loopTimes / 10; i++)
             {
-                chromeDriver.Url = "https://www.google.com/";
-
-                IWebElement searchElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='q']")));
-                searchElement.SendKeys(keyWord);
-                searchElement.SendKeys(Keys.Enter);
-
-                IReadOnlyCollection<IWebElement> listElements = chromeDriver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
-                IReadOnlyCollection<IWebElement> nextElements = null;
-                int page = 1;
-                while (listElements.Count != 1)
+                IWebDriver chromeDriver = new ChromeDriver(driverPath, chromeOptions);
+                chromeDriver.Manage().Window.Maximize();
+                WebDriverWait wait = new WebDriverWait(chromeDriver, TimeSpan.FromSeconds(60));
+                for (int j = 0; j < 10; j++)
                 {
-                    page++;
-                    nextElements = chromeDriver.FindElements(By.XPath("//a[@aria-label = 'Page " + page + "']"));
-                    if (nextElements.Count > 0)
+                    chromeDriver.Url = "https://www.google.com/";
+
+                    IWebElement searchElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='q']")));
+                    searchElement.SendKeys(keyWord);
+                    searchElement.SendKeys(Keys.Enter);
+
+                    IReadOnlyCollection<IWebElement> listElements = chromeDriver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
+                    IReadOnlyCollection<IWebElement> nextElements = null;
+                    int page = 1;
+                    while (listElements.Count != 1)
                     {
-                        nextElements.ElementAt(0).Click();
+                        page++;
+                        nextElements = chromeDriver.FindElements(By.XPath("//a[@aria-label = 'Page " + page + "']"));
+                        if (nextElements.Count > 0)
+                        {
+                            nextElements.ElementAt(0).Click();
+                        }
+                        listElements = chromeDriver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
                     }
-                    listElements = chromeDriver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
+                    listElements.ElementAt(0).Click();
+                    Task.Delay(60000).Wait();
                 }
-                listElements.ElementAt(0).Click();
-                Task.Delay(60000).Wait();
+                chromeDriver.Quit();
             }
             Console.WriteLine("Done");
         }
