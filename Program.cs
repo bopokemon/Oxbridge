@@ -29,45 +29,55 @@ namespace SEOWebsite
             string browserType = Properties.Settings.Default.BrowserType;
             IWebDriver driver = null;
             Random random = new Random();
-            for (int i = 0; i < loopTimes; i++)
+            try
             {
-                if (browserType == "Chrome")
-                {
-                    driver = new ChromeDriver(driverPath, chromeOptions);
-                }
-                else if (browserType == "Edge")
-                {
-                    driver = new EdgeDriver(driverPath, edgeOptions);
-                }
-                driver.Manage().Window.Maximize();
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-                for (int j = 0; j < 10; j++)
-                {
-                    driver.Url = "https://www.google.com/";
 
-                    IWebElement searchElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='q']")));
-                    searchElement.SendKeys(keyWord);
-                    searchElement.SendKeys(Keys.Enter);
 
-                    IReadOnlyCollection<IWebElement> listElements = driver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
-                    IReadOnlyCollection<IWebElement> nextElements = null;
-                    int page = 1;
-                    while (listElements.Count != 1)
+                for (int i = 0; i < loopTimes; i++)
+                {
+                    if (browserType == "Chrome")
                     {
-                        page++;
-                        nextElements = driver.FindElements(By.XPath("//a[@aria-label = 'Page " + page + "']"));
-                        if (nextElements.Count > 0)
-                        {
-                            nextElements.ElementAt(0).Click();
-                        }
-                        listElements = driver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
+                        driver = new ChromeDriver(driverPath, chromeOptions);
                     }
-                    listElements.ElementAt(0).Click();
-                    Task.Delay(random.Next(60000,180000)).Wait();
+                    else if (browserType == "Edge")
+                    {
+                        driver = new EdgeDriver(driverPath, edgeOptions);
+                    }
+                    driver.Manage().Window.Maximize();
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+                    for (int j = 0; j < 10; j++)
+                    {
+                        driver.Url = "https://www.google.com/";
+
+                        IWebElement searchElement = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//input[@name='q']")));
+                        searchElement.SendKeys(keyWord);
+                        searchElement.SendKeys(Keys.Enter);
+
+                        IReadOnlyCollection<IWebElement> listElements = driver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
+                        IReadOnlyCollection<IWebElement> nextElements = null;
+                        int page = 1;
+                        while (listElements.Count != 1)
+                        {
+                            page++;
+                            nextElements = driver.FindElements(By.XPath("//a[@aria-label = 'Page " + page + "']"));
+                            if (nextElements.Count > 0)
+                            {
+                                nextElements.ElementAt(0).Click();
+                            }
+                            listElements = driver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
+                        }
+                        listElements.ElementAt(0).Click();
+                        Task.Delay(random.Next(60000, 180000)).Wait();
+                    }
+                    driver.Quit();
                 }
-                driver.Quit();
+                Console.WriteLine("Done");
             }
-            Console.WriteLine("Done");
+            catch (Exception ex)
+            {
+                driver.Quit();
+                throw;
+            }
         }
     }
 }
