@@ -37,7 +37,7 @@ namespace SEOWebsite.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("trung tam tieng anh oxbridge")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Trung tâm Anh ngữ Oxbridge")]
         public string KeyWord {
             get {
                 return ((string)(this["KeyWord"]));

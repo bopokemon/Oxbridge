@@ -28,7 +28,8 @@ namespace SEOWebsite
             string keyWord = Properties.Settings.Default.KeyWord;
             string browserType = Properties.Settings.Default.BrowserType;
             IWebDriver driver = null;
-            for (int i = 0; i < loopTimes / 10; i++)
+            Random random = new Random();
+            for (int i = 0; i < loopTimes; i++)
             {
                 if (browserType == "Chrome")
                 {
@@ -62,7 +63,7 @@ namespace SEOWebsite
                         listElements = driver.FindElements(By.XPath("//a[@href='http://oxbridge.com.vn/']"));
                     }
                     listElements.ElementAt(0).Click();
-                    Task.Delay(60000).Wait();
+                    Task.Delay(random.Next(60000,180000)).Wait();
                 }
                 driver.Quit();
             }
